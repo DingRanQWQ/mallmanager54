@@ -9,45 +9,43 @@
 </el-row>
 </el-header>
 
-
   <el-container>
 
     <el-aside class="aside" width="200px">
-       
     <el-menu class="el-menu-vertical-demo" :router="true" :unique-opened="true">
         <!-- 1 -->
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>用户管理</span>
-        </template> 
-           <el-menu-item index="1-1">
+        </template>
+           <el-menu-item index="/user">
                 <i class="el-icon-location"></i>
-               用户列表</el-menu-item> 
+               用户列表</el-menu-item>
       </el-submenu>
       <!-- 2 -->
       <el-submenu index="2">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>权限管理</span>
-        </template> 
+        </template>
            <el-menu-item index="1-1">
                 <i class="el-icon-location"></i>
-               角色列表</el-menu-item> 
-     
+               角色列表</el-menu-item>
+
        <el-menu-item index="1-1">
                 <i class="el-icon-location"></i>
-               权限列表</el-menu-item> 
+               权限列表</el-menu-item>
        </el-submenu>
       <!-- 3 -->
       <el-submenu index="3">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>商品管理</span>
-        </template> 
+        </template>
            <el-menu-item index="1-1">
                 <i class="el-icon-location"></i>
-               商品列表</el-menu-item> 
+               商品列表</el-menu-item>
                 <el-menu-item index="1-1">
                 <i class="el-icon-location"></i>
              分类参数</el-menu-item>
@@ -60,47 +58,47 @@
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>订单管理</span>
-        </template> 
+        </template>
            <el-menu-item index="1-1">
                 <i class="el-icon-location"></i>
-               订单列表</el-menu-item> 
+               订单列表</el-menu-item>
       </el-submenu>
       <!-- 5 -->
       <el-submenu index="5">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>数据统计</span>
-        </template> 
+        </template>
            <el-menu-item index="1-1">
                 <i class="el-icon-location"></i>
-               数据报表</el-menu-item> 
+               数据报表</el-menu-item>
       </el-submenu>
-
 
     </el-menu>
         </el-aside>
 
-
-    <el-main class="main">Main</el-main>
+    <el-main class="main">
+        <router-view></router-view>
+    </el-main>
   </el-container>
 </el-container>
 </template>
 
 <script>
 export default {
-    beforeCreate(){
-        const token=localStorage.getItem('token');
-        if(!token){
-            this.$router.push({name:'login'})
-        }
-    },
-    methods:{
-        handleSignout(){
-            localStorage.clear()
-            this.$router.push({name:'login'})
-            this.$message.success('退出成功')
-        }
+  beforeCreate () {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      this.$router.push({name: 'login'})
     }
+  },
+  methods: {
+    handleSignout () {
+      localStorage.clear()
+      this.$router.push({name: 'login'})
+      this.$message.success('退出成功')
+    }
+  }
 }
 </script>
 

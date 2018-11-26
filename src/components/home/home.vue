@@ -5,7 +5,7 @@
   <el-col :span="4"><div class="grid-content bg-purple">
       <img src="../../assets/logo.png" alt="该图片无法显示"></div></el-col>
   <el-col :span="19" class="middle"> <div class="grid-content bg-purple-light"><h2>电商后台管理系统</h2></div></el-col>
-  <el-col :span="1"><a href="#" class="loginout">退出</a> </el-col>
+  <el-col :span="1"><a href="#" class="loginout" @click="handleSignout">退出</a> </el-col>
 </el-row>
 </el-header>
 
@@ -92,6 +92,13 @@ export default {
         const token=localStorage.getItem('token');
         if(!token){
             this.$router.push({name:'login'})
+        }
+    },
+    methods:{
+        handleSignout(){
+            localStorage.clear()
+            this.$router.push({name:'login'})
+            this.$message.success('退出成功')
         }
     }
 }

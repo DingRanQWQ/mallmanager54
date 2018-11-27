@@ -60,8 +60,8 @@
         label="操作">
          <template slot-scope="scope">
        <el-row>
-        <el-button size="mini" plain type="primary" icon="el-icon-edit" circle></el-button>
-        <el-button size="mini" plain  type="danger" icon="el-icon-delete"  circle></el-button>
+        <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="showEditUserDia"></el-button>
+        <el-button size="mini" plain  type="danger" icon="el-icon-delete"  circle @click="showMegBox(scope.row.id)"></el-button>
         <el-button size="mini" plain  type="success" icon="el-icon-check" circle></el-button>
       </el-row>
         </template>
@@ -97,6 +97,26 @@
     <el-button type="primary" @click="addUser">确 定</el-button>
   </div>
 </el-dialog>
+<!-- 编辑用户对话框 -->
+<el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit">
+  <el-form :model="form">
+    <el-form-item label="用户名称" label-width="100px">
+      <el-input v-model="form.username" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="邮箱" label-width="100px">
+      <el-input v-model="form.email" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="电话" label-width="100px">
+      <el-input v-model="form.mobile" autocomplete="off"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
+    <el-button type="primary" @click="addUser">确 定</el-button>
+  </div>
+</el-dialog>
+
+
 </el-card>
 </template>
 
@@ -124,6 +144,7 @@ export default {
           ],
           //添加对话框属性
           dialogFormVisibleAdd:false,
+          dialogFormVisibleEdit:false,
           //用户表单数据
           form:{
                 username:'',
@@ -135,6 +156,34 @@ export default {
         
       },
   methods:{
+    //显示编辑对话框
+    showEditUserDia(){
+       this.dialogFormVisibleEdit=true
+    },
+   
+    //删除-打开提示框
+    showMegBox(userId){
+       this.$confirm('是否删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          //发送删除请求
+         const res=await this.$http.delete(`users/${userId}`)
+          this.getUserList();
+
+          this.$message({
+            type: 'success',
+            message: res.data.meta.message
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      },
+   
     //显示添加对话框
     showAddUserDia(){
        this.dialogFormVisibleAdd=true

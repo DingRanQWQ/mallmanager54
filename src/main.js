@@ -13,7 +13,7 @@ Vue.use(MyHttpServer)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-Vue.filter('fmtDate',(v)=>{
+Vue.filter('fmtDate',function(v){
   return moment(v).format('YYYY-MM-DD')
 })
 new Vue({

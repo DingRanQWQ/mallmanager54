@@ -4,7 +4,7 @@
    <my-bread level1="权限管理" level2="权限列表"></my-bread>
    <!-- 表格 -->
    <el-table
-      :data="rightlist"
+      :data="rightlist" height="450px"
       style="width: 100%">
       <el-table-column
      type="index"

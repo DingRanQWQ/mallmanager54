@@ -8,8 +8,8 @@
 
 <script>
 export default {
-  name:'my-bread',
-  props:['level1','level2']
+  name: 'my-bread',
+  props: ['level1', 'level2']
 }
 </script>
 

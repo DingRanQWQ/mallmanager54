@@ -17,7 +17,7 @@ Vue.config.productionTip = false
 Vue.filter('fmtDate', function (v) {
   return moment(v).format('YYYY-MM-DD')
 })
-Vue.component(MyBread.name,MyBread)
+Vue.component(MyBread.name, MyBread)
 new Vue({
   el: '#app',
   router,

@@ -34,21 +34,21 @@
 
 <script>
 export default {
-    data(){
-        return{
-            rightlist:[]
-        }
-    },
-    created(){
-        this.getRightlist()
-    },
-    methods:{
-      async getRightlist(){  
-        const res=await this.$http.get('rights/list')
-        console.log(res)
-        this.rightlist=res.data.data
-      }
+  data () {
+    return {
+      rightlist: []
     }
+  },
+  created () {
+    this.getRightlist()
+  },
+  methods: {
+    async getRightlist () {
+      const res = await this.$http.get('rights/list')
+      console.log(res)
+      this.rightlist = res.data.data
+    }
+  }
 }
 </script>
 

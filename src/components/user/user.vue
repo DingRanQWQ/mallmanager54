@@ -160,10 +160,10 @@ export default {
           username: ''}
       ],
       // 添加对话框属性
-      setRoleDialogFormVisible:false,
+      setRoleDialogFormVisible: false,
       dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,
-      
+
       // 用户表单数据
       form: {
         username: '',
@@ -171,38 +171,37 @@ export default {
         email: '',
         mobile: ''
       },
-      currentname:'',
-      currentid:-1,
-      roles:[],
-      currRoleId:-1
+      currentname: '',
+      currentid: -1,
+      roles: [],
+      currRoleId: -1
     }
   },
   methods: {
-    
-//显示分配角色的对话框
-    async handleShowSetRole(user){
-      this.setRoleDialogFormVisible=true
-      this.currentname=user.username
-      this.currentid=user.id
-        // 获取所有角色的名称
+
+    // 显示分配角色的对话框
+    async handleShowSetRole (user) {
+      this.setRoleDialogFormVisible = true
+      this.currentname = user.username
+      this.currentid = user.id
+      // 获取所有角色的名称
       const res = await this.$http.get('roles')
-     this.roles=res.data.data 
-     // 获取当前用户的角色的id
-     const res2 = await this.$http.get(`users/${user.id}`)
-     this.currRoleId=res2.data.data.rid
+      this.roles = res.data.data
+      // 获取当前用户的角色的id
+      const res2 = await this.$http.get(`users/${user.id}`)
+      this.currRoleId = res2.data.data.rid
     },
-    //分配角色功能
-   async handleSetRole(){
-        const res=await this.$http.put(`users/${this.currentid}/role`,{rid:this.currRoleId})
-        const {meta:{status,msg}}=res.data
-        if(status===200){
-          this.setRoleDialogFormVisible=false
-          
-        }
+    // 分配角色功能
+    async handleSetRole () {
+      const res = await this.$http.put(`users/${this.currentid}/role`, {rid: this.currRoleId})
+      const {meta: {status}} = res.data
+      if (status === 200) {
+        this.setRoleDialogFormVisible = false
+      }
     },
-    //修改用户状态
-   async handleSwitchChange(user){
-      const res=await this.$http.put(`users/${user.id}/state/${user.mg_state}`)
+    // 修改用户状态
+    async handleSwitchChange (user) {
+      const res = await this.$http.put(`users/${user.id}/state/${user.mg_state}`)
       console.log(res)
     },
     // 显示编辑对话框
@@ -291,7 +290,7 @@ export default {
       const AUTH_TOKEN = localStorage.getItem('token')
       this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
       const res = await this.$http.get(`users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`)
-      // console.log(res)
+      console.log(res)
       const {data: {total, users}, meta: {status, msg}} = res.data
       if (status === 200) {
         this.total = total

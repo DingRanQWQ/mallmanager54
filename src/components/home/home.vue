@@ -14,18 +14,16 @@
     <el-aside class="aside" width="200px">
     <el-menu class="el-menu-vertical-demo" :router="true" :unique-opened="true">
 
-      
-      <el-submenu v-for="(item1,i) in menus" :key="i" :index="''+item1.order">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>{{item1.authName}}</span>
-        </template>
-           <el-menu-item v-for="(item2,index) in item1.children" :key="index" :index="item2.path">
+        <el-submenu v-for="(item1,i) in menus" :key="i" :index="''+item1.order">
+            <template slot="title">
                 <i class="el-icon-location"></i>
-               {{item2.authName}}</el-menu-item>
-      </el-submenu>
-    
-
+                <span>{{item1.authName}}</span>
+            </template>
+          <el-menu-item v-for="(item2,index) in item1.children" :key="index" :index="item2.path">
+              <i class="el-icon-location"></i>
+            {{item2.authName}}
+          </el-menu-item>
+        </el-submenu>
 
     </el-menu>
         </el-aside>
@@ -39,21 +37,21 @@
 
 <script>
 export default {
-  data(){
-    return{
-       menus:[]
+  data () {
+    return {
+      menus: []
     }
   },
-  mounted(){
+  mounted () {
     this.loadData()
   },
   methods: {
-   async loadData(){
-      const res=await this.$http.get('menus')
-      console.log(res)
-      const {data,meta:{status}}=res.data
-      if(status===200){
-        this.menus=data
+    async loadData () {
+      const res = await this.$http.get('menus')
+      //console.log(res)
+      const {data, meta: {status}} = res.data
+      if (status === 200) {
+        this.menus = data
       }
     },
 

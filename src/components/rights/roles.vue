@@ -120,8 +120,8 @@ export default {
       const res = await this.$http.post(`roles/${this.currentRoleId}/rights`, {
         rids: newArr.join('.')
       })
-      const {meta: {status}}= res.data
-      if(status === 200){
+      const {meta: {status}} = res.data
+      if (status === 200) {
         this.dialogFormVisibleRight = false
         this.getRolelist()
       }

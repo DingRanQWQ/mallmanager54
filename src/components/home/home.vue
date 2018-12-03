@@ -48,7 +48,7 @@ export default {
   methods: {
     async loadData () {
       const res = await this.$http.get('menus')
-      //console.log(res)
+       console.log(res)
       const {data, meta: {status}} = res.data
       if (status === 200) {
         this.menus = data

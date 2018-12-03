@@ -48,7 +48,7 @@
         <el-checkbox-group v-model="item1.attr_vals">
           <el-checkbox v-for="(item2,index) in item1.attr_vals" :key="index" :label="item2"></el-checkbox>
         </el-checkbox-group>
-        </el-form-item>   
+        </el-form-item>
     </el-tab-pane>
     <el-tab-pane name="3" label="商品属性">
         <el-form-item v-for="(item,i2) in arrStaticparams" :key="i2" :label="item.attr_name">
@@ -58,11 +58,10 @@
     <el-tab-pane name="4" label="商品图片">
         <el-upload
         action="http://127.0.0.1:8888/api/private/v1/upload"
-        :header="headers"
+        :headers="headers"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :on-success="handleSuccess"
-     
         list-type="picture">
      <el-button size="small" type="primary">点击上传</el-button>
 </el-upload>
@@ -83,95 +82,109 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 export default {
-    components: {
-        quillEditor
-    },
-    data(){
-        return{
-            active:"1",
-            form:{
-                goods_name:'',
-                goods_price:'',
-                goods_number:'',
-                goods_weight:'',
-                goods_introduce:'',
-                goods_cat:'',  //以逗号分割的分类列表
-                pics:[],
-                attrs:[],   //商品的参数（数组）   
-            },
-            options:[],
-            defaultProps:{
-                value: 'cat_id',
-                label: 'cat_name',
-                children: 'children'
-            },
-            selectedOptions:[1,3,6],
-            dynamicsParams:[],
-            arrStaticparams:[],
-            headers:{
-                Authorization:localStorage.getItem('token')
-            },
-            fileList:[]
-        }
-    },
-    created(){
-        this.loadOptions()
-    },
-    methods:{
-        //发送表单
-        async addGood(){
-            //console.log(this.form)
-            this.form.goods_cat=this.selectedOptions.join(",")
-            const res=await this.$http.post('goods',this.form)
-        },
-        //图片上传
-        handleRemove(file,fileList){
-           console.log(file,fileList)
-            //file.response.data.tmp_path
-           let Index=this.form.pics.findIndex((item)=>{
-               return item.pic===file.response.data.tmp_path
-           })
-           this.form.pics.splice(Index,1)
-           console.log(this.form.pics)
-        },
-        handlePreview(file){
-          console.log(file)
-        },
-        handleSuccess(file){
-            console.log(file)
-           //file.data.tmp_path
-           this.form.pics.push({
-               pic:file.data.tmp_path
-           })
-        },
-
-        //tagchange
-        async tabchange(){
-        if(this.selectedOptions.length!==3){
-                this.$message.warning('商品只能添加到三级分类')}
-        if(this.active==='2'){
-            const res=await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=many`)
-            this.dynamicsParams=res.data.data
-            this.dynamicsParams.forEach((item)=>{
-                item.attr_vals=item.attr_vals.trim().length===0?[]:item.attr_vals.trim().split(',')
-            })
-        }else if(this.active==='3'){
-             const res=await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=only`)
-             this.arrStaticparams=res.data.data
-            
-        }
-        },
-        //获取三级联动表单数据
-        async loadOptions(){
-           const res=await this.$http.get('categories?type=3')
-           //console.log(res)
-           this.options=res.data.data
-        },
-        handleChange(){
-           
-           }
-        }
+  components: {
+    quillEditor
+  },
+  data () {
+    return {
+      active: '1',
+      form: {
+        goods_name: '',
+        goods_price: '',
+        goods_number: '',
+        goods_weight: '',
+        goods_introduce: '',
+        goods_cat: '', // 以逗号分割的分类列表
+        pics: [],
+        attrs: [
+      //     {
+      //  "attr_id":1,
+      //  "attr_value":""
+      //    }
+        ] // 商品的参数（数组）
+      },
+      options: [],
+      defaultProps: {
+        value: 'cat_id',
+        label: 'cat_name',
+        children: 'children'
+      },
+      selectedOptions: [1, 3, 6],
+      dynamicsParams: [],
+      arrStaticparams: [],
+      headers: {
+        Authorization: localStorage.getItem('token')
+      },
+      fileList: []
     }
+  },
+  created () {
+    this.loadOptions()
+  },
+  methods: {
+    // 发送表单
+    async addGood () {
+      //attrs
+     let arr1=this.dynamicsParams.map((item)=>{
+    return  {'attr_id':item.attr_id,'attr_value':item.attr_vals}
+      })
+    let arr2=  this.arrStaticparams.map((item)=>{
+        return {'attr_id':item.attr_id,'attr_value':item.attr_vals}
+      })
+    let attrs=[...arr1,...arr2];
+      console.log(arr1)
+      // console.log(this.form)
+      this.form.goods_cat = this.selectedOptions.join(',')
+      // const res = await this.$http.post('goods', this.form)
+    },
+    // 图片上传
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+      // file.response.data.tmp_path
+      let Index = this.form.pics.findIndex((item) => {
+        return item.pic === file.response.data.tmp_path
+      })
+      this.form.pics.splice(Index, 1)
+      console.log(this.form.pics)
+    },
+    handlePreview (file) {
+      console.log(file)
+    },
+    handleSuccess (file) {
+      console.log(file)
+      // file.data.tmp_path
+      this.form.pics.push({
+        pic: file.data.tmp_path
+      })
+    },
+
+    // tagchange
+    async tabchange () {
+      if (this.selectedOptions.length !== 3) {
+        this.$message.warning('商品只能添加到三级分类')
+      }
+      if (this.active === '2') {
+        const res = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=many`)
+        this.dynamicsParams = res.data.data
+        this.dynamicsParams.forEach((item) => {
+          item.attr_vals = item.attr_vals.trim().length === 0 ? [] : item.attr_vals.trim().split(',')
+        })
+      } else if (this.active === '3') {
+        const res = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=only`)
+        this.arrStaticparams = res.data.data
+      }
+    },
+    // 获取三级联动表单数据
+    async loadOptions () {
+      const res = await this.$http.get('categories?type=3')
+      // console.log(res)
+      this.options = res.data.data
+    },
+    handleChange () {
+
+    }
+  }
+}
 
 </script>
 
